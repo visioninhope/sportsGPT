@@ -24,7 +24,7 @@ column_mapping = {
     'FG_PCT': '2PT_%', 'FG3M': '3PTMade', 'FG3A': '3PT_Attempted', 'FG3_PCT': '3PT_%',
     'FTM': 'FreeThrowsMade', 'FTA': 'FreeThrowsAttempted', 'FT_PCT': 'FreeThrow%',
     'OREB': 'OffensiveRebounds', 'DREB': 'DefensiveRebounds', 'REB': 'TotRebounds',
-    'AST': 'Assists', 'STL': 'Steals', 'BLK': 'Blocks', 'TO': 'Turnovers',
+    'AST': 'Assists', 'STL': 'Steals', 'BLK': 'Blocks', 'TOV': 'Turnovers',
     'PF': 'PersonalFouls', 'PTS': 'Points', 'PLUS_MINUS': '+/-'
 }
 
@@ -47,11 +47,6 @@ for player in active_nba_players[:20]:  # Limiting to the first 20 for demonstra
         # Rename columns
         game_stats.rename(columns=column_mapping, inplace=True)
 
-        # Format percentage columns
-        game_stats['2PT_%'] = (game_stats['2PT_%'] * 100).round(1).astype(str) + '%'
-        game_stats['3PT_%'] = (game_stats['3PT_%'] * 100).round(1).astype(str) + '%'
-        game_stats['FreeThrow%'] = (game_stats['FreeThrow%'] * 100).round(1).astype(str) + '%'
-
         # Add Player and Team columns
         game_stats['Player'] = player['full_name']
         game_stats['Team'] = team_name
@@ -60,12 +55,21 @@ for player in active_nba_players[:20]:  # Limiting to the first 20 for demonstra
         columns_order = ['Player', 'Team', 'GAME_DATE', 'MATCHUP', 'Win/Loss', 'Minutes', '2PTMade', '2PTAttempted', '2PT_%', '3PTMade', '3PT_Attempted', '3PT_%', 'FreeThrowsMade', 'FreeThrowsAttempted', 'FreeThrow%', 'OffensiveRebounds', 'DefensiveRebounds', 'TotRebounds', 'Assists', 'Steals', 'Blocks', 'Turnovers', 'PersonalFouls', 'Points', '+/-']
         game_stats = game_stats[columns_order]
 
-        # Calculate and append averages
+        # Calculate averages for numeric columns
         averages = game_stats.mean(numeric_only=True)
+
+        # Format percentage columns separately
+        for col in ['2PT_%', '3PT_%', 'FreeThrow%']:
+            averages[col] = "{:.1f}%".format(game_stats[col].mean())
+
+        # Add Player and Team for the averages row
         averages['Player'] = player['full_name'] + ' - Average'
         averages['Team'] = 'Average'
-        game_stats = game_stats.append(averages, ignore_index=True)
 
+        # Append the averages row
+        game_stats = pd.concat([game_stats, pd.DataFrame([averages])], ignore_index=True)
+
+        # Concatenate with the main DataFrame
         all_players_data = pd.concat([all_players_data, game_stats], ignore_index=True)
 
     time.sleep(1)  # Pause to avoid hitting the API rate limit

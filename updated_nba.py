@@ -27,8 +27,20 @@ def scrape_players_data(url, csv_file_path):
         if player_info:
             players_data.append(player_info)
 
-    # Convert the data to a DataFrame
-    df_players = pd.DataFrame(players_data)
+    # Define the headers
+    headers = [
+        "Player", "Position", "Age", "Team", "Games", "GamesStarted",
+        "MinutesPlayed", "FieldGoals", "FieldGoalsAttempted", "FieldGoalPercentage",
+        "ThreePointers", "ThreePointersAttempted", "ThreePointPercentage",
+        "TwoPointers", "TwoPointersAttempted", "TwoPointersPercentage",
+        "EffectiveFieldGoalPercentage", "FreeThrows", "FreeThrowsAttempted",
+        "FreeThrowsPercentage", "OffensiveRebounds", "DefensiveRebounds",
+        "TotalRebounds", "Assists", "Steals", "Blocks", "Turnovers",
+        "PersonalFouls", "Points"
+    ]
+
+    # Convert the data to a DataFrame with the new headers
+    df_players = pd.DataFrame(players_data, columns=headers)
 
     # Print the data to the terminal
     print(df_players)

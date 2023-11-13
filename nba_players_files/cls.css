@@ -1,0 +1,45 @@
+#basketball-reference_320x50_ATF {
+		height: 50px;
+}
+#basketball-reference_table_mobile_mrec {
+		height: 250px;
+}
+#div-gpt-ad-300x250-Mobile-1 {
+		height: 250px;
+}
+#div-gpt-ad-728x90-BTF-1 {
+		height: 250px;
+}
+#div-gpt-ad-728x90-BTF-2 {
+		height: 250px;
+}
+#div-gpt-ad-728x90-Footer {
+		height: 250px;
+}
+#div-gpt-ad-728x90-GeneralHeader {
+		height: 250px;
+}
+@media only screen and (min-device-width: 768px) {
+	#div-gpt-ad-728x90-BTF-1 {
+		height: 312px;
+	}
+	#div-gpt-ad-728x90-BTF-2 {
+		height: 312px;
+	}
+	#div-gpt-ad-728x90-Footer {
+		height: 250px;
+	}
+	#div-gpt-ad-728x90-GeneralHeader {
+		height: 90px;
+	}
+}
+@media only screen and (min-device-width: 799px) {
+	#div-gpt-ad-728x90-ATF {
+		height: 90px;
+	}
+}
+@media only screen and (min-device-width: 735px) {
+	#div-gpt-ad-300x250-ATF {
+		height: 250px;
+	}
+}

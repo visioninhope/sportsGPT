@@ -47,9 +47,6 @@ for player_url in unique_player_urls:
 # Close the driver
 driver.quit()
 
-# Debugging: Print the number of scraped URLs
-print(f"Number of scraped URLs: {len(scraped_urls)}")
-
 # Write the scraped URLs to a CSV file
 csv_file = 'extracted_urls.csv'
 with open(csv_file, 'w', newline='', encoding='utf-8') as file:
