@@ -2,6 +2,8 @@
 .env
 .env.local
 
+.DS_Store
+
 # dependencies
 /node_modules
 /.pnp

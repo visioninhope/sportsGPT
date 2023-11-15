@@ -19,14 +19,15 @@ const Home: NextPage = () => {
         setResponse(data.answer);
     };
 
+export default function Home() {
     return (
-        <div className="container mx-auto p-4">
-            <InputForm onSubmit={handleFormSubmit} />
-            <div className="mt-4">
-                <p className="text-gray-700">{response}</p>
-            </div>
-        </div>
-    );
+            <>
+                // <div className="container mx-auto p-4">
+                //     <InputForm onSubmit={handleFormSubmit}></InputForm>
+                //     <div className="mt-4">
+                //         <p className="text-gray-700">{response}</p>
+                //     </div>
+                // </div>
+            </>
+        );
 };
-
-export default Home;
