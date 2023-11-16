@@ -1,33 +1,15 @@
 // pages/index.tsx
 import type { NextPage } from 'next';
-import React, { useState } from 'react';
-import InputForm from '../components/InputForm';
+import React from 'react';
+import Input from '../components/Input';
 
 const Home: NextPage = () => {
-    const [response, setResponse] = useState('');
-
-    const handleFormSubmit = async (input: string) => {
-        const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ prompt: input }),
-        });
-
-        const data = await res.json();
-        setResponse(data.answer);
-    };
-
-export default function Home() {
     return (
-            <>
-                // <div className="container mx-auto p-4">
-                //     <InputForm onSubmit={handleFormSubmit}></InputForm>
-                //     <div className="mt-4">
-                //         <p className="text-gray-700">{response}</p>
-                //     </div>
-                // </div>
-            </>
-        );
-};
+        <div>
+            <Input />
+            
+        </div>
+    );
+}
+
+export default Home;
