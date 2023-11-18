@@ -6,6 +6,7 @@ from datetime import datetime
 import os
 import csv
 from dotenv import load_dotenv
+import psycopg2
 
 # Load Environment Variables
 load_dotenv()
@@ -16,35 +17,34 @@ DB_USER = os.getenv("DB_USER", "default_user")
 DB_PASSWORD = os.getenv("DB_PASSWORD", "default_password")
 DB_HOST = os.getenv("DB_HOST", "localhost")
 
-
-# Get current date
+# Get current date and filename
 current_date = datetime.now().strftime("%Y%m%d")
-csv_filename = f'nba_player_game_stats_{current_date}.csv'  # Dynamic filename
+csv_file_path = f'nba_player_game_stats_{current_date}.csv'
 
 # Function to create a database connection
 def create_connection():
     try:
         return psycopg2.connect(
-            user = DB_USER,
-            password = DB_PASSWORD,
-            host = DB_HOST,
-            database = DB_NAME
+            user=DB_USER,
+            password=DB_PASSWORD,
+            host=DB_HOST,
+            database=DB_NAME
         )
     except Exception as e:
         print(f"Database connection failed: {e}")
         return None
 
+# Function to get player's team
 def get_player_team(player_id):
     player_info = commonplayerinfo.CommonPlayerInfo(player_id=player_id)
     player_info_df = player_info.get_data_frames()[0]
     return player_info_df.loc[0, 'TEAM_NAME'] if not player_info_df.empty else 'No team found'
 
+# Formatting functions
 def format_percentage(value):
-    """Formats a decimal percentage value to a string with one decimal place."""
     return "{:.1f}%".format(value * 100)
 
 def format_one_decimal(value):
-    """Formats a numeric value to a string with one decimal place."""
     return "{:.1f}".format(value)
 
 # Fetch all NBA players
@@ -134,7 +134,6 @@ def add_data_to_db(filename):
                 reader = csv.DictReader(file)
                 with conn.cursor() as cursor:
                     for row in reader:
-                        # Construct the INSERT query dynamically based on the CSV headers
                         columns = ', '.join(row.keys())
                         placeholders = ', '.join(['%s'] * len(row))
                         query = f"INSERT INTO nba_player_game_stats ({columns}) VALUES ({placeholders})"
@@ -147,15 +146,10 @@ def add_data_to_db(filename):
 
 # Main function
 def main():
-    add_data_to_db(csv_filename)
+    # [Data Collection and Processing]
+    all_players_data.to_csv(csv_file_path, index=False)
+    print(f"Data saved to {csv_file_path}")
+    add_data_to_db(csv_file_path)
 
 if __name__ == "__main__":
     main()
-
-# Get current date
-current_date = datetime.now().strftime("%Y%m%d")
-
-# Save the data to a CSV file with current date appended
-csv_file_path = f'nba_player_game_stats_{current_date}.csv'
-all_players_data.to_csv(csv_file_path, index=False)
-print(f"Data saved to {csv_file_path}")
